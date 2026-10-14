@@ -1,0 +1,27 @@
+info:
+  name: "Malformed JSON"
+  type: http
+  seq: 11
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/lists"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {"name": "Missing quote}
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "400"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `400 Bad Request`: the body can't even be parsed.

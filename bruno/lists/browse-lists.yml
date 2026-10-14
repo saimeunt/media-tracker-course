@@ -1,0 +1,34 @@
+info:
+  name: "Browse lists"
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/lists?page=1&limit=10"
+  params:
+    - name: page
+      value: "1"
+      type: query
+    - name: limit
+      value: "10"
+      type: query
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.page
+      operator: eq
+      value: "1"
+    - expression: res.body.total
+      operator: isNumber
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Public lists, plus your own private ones. Pagination by page number this time
+  (`page`, `limit`, `total`), to compare with the cursor pagination of media.
+  Lists come without their items, only `itemCount`.

@@ -1,0 +1,20 @@
+info:
+  name: "Delete the list"
+  type: http
+  seq: 13
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/lists/{{listId}}"
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "204"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `204 No Content`: done, nothing to return. Run "Get the list" again: `404`.

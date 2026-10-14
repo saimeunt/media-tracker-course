@@ -1,0 +1,20 @@
+{
+  "name": "@media-tracker/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Zod schemas and types shared by the web and api apps",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@media-tracker/seed-data": "workspace:*",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}

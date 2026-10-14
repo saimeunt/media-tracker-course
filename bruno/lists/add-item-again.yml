@@ -1,0 +1,29 @@
+info:
+  name: "Add the same item again"
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/lists/{{listId}}/items"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "mediaId": "Q25188"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "409"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `409 Conflict`: the request is valid, but clashes with the current state of the list.

@@ -1,0 +1,20 @@
+{
+  "name": "media-tracker-course",
+  "private": true,
+  "description": "REST / MongoDB / GraphQL course: companion webapp, shared packages and seed data",
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "docker compose up --build",
+    "down": "docker compose down",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "requests": "cd bruno && bru run --env local -r",
+    "exercise": "pnpm --filter @media-tracker/api exercise"
+  },
+  "devDependencies": {
+    "@usebruno/cli": "4.2.1"
+  }
+}

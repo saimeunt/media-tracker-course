@@ -1,0 +1,37 @@
+{
+  "name": "@media-tracker/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Media tracker backend: REST and GraphQL APIs on Express, backed by MongoDB",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node src/server.ts",
+    "typecheck": "tsc -p .",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "exercise": "node scripts/exercise.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "5.5.1",
+    "@as-integrations/express5": "1.1.2",
+    "@media-tracker/seed-data": "workspace:*",
+    "@media-tracker/shared": "workspace:*",
+    "cookie-parser": "1.4.7",
+    "dataloader": "2.2.3",
+    "express": "5.3.0",
+    "graphql": "16.14.2",
+    "jsonwebtoken": "9.0.3",
+    "mongodb": "7.7.0",
+    "multer": "2.4.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "1.4.10",
+    "@types/express": "5.0.6",
+    "@types/jsonwebtoken": "9.0.10",
+    "@types/multer": "2.3.0",
+    "@types/node": "26.6.5",
+    "nodemon": "3.1.14",
+    "typescript": "7.0.2"
+  }
+}

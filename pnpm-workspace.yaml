@@ -1,0 +1,7 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  # Its postinstall script only prints a notice; not needed.
+  '@apollo/protobufjs': false
+  protobufjs: false

@@ -1,0 +1,41 @@
+info:
+  name: "Replace all items"
+  type: http
+  seq: 8
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/lists/{{listId}}/items"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      [
+        {
+          "mediaId": "Q83495"
+        },
+        {
+          "mediaId": "Q25188",
+          "note": "Again!"
+        }
+      ]
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.items
+      operator: length
+      value: "2"
+    - expression: res.body.items[0].title
+      operator: eq
+      value: "The Matrix"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `PUT` replaces the whole collection, here to reorder it. It is idempotent: send it twice, same result.

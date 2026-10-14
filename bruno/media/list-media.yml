@@ -1,0 +1,47 @@
+info:
+  name: "List media"
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/media?type=movie&sort=-popularity&limit=5"
+  params:
+    - name: type
+      value: "movie"
+      type: query
+    - name: sort
+      value: "-popularity"
+      type: query
+    - name: limit
+      value: "5"
+      type: query
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.items
+      operator: length
+      value: "5"
+    - expression: res.body.nextCursor
+      operator: isString
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.nextCursor
+        method: jsonq
+      variable:
+        name: nextCursor
+        scope: runtime
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Filters (`type`, `genre`), sorting (`sort`, `-` for descending) and cursor pagination (`limit`).
+
+  The response holds `nextCursor`: pass it back as `?cursor=` to get the next page
+  (see "Next page"). Try `genre=science fiction film` or `sort=title`.

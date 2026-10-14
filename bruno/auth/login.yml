@@ -1,0 +1,37 @@
+info:
+  name: "Sign in"
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/auth/login"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "alice@example.com",
+        "password": "password123"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.username
+      operator: eq
+      value: "alice"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Signs in as the demo user alice. The response sets an `HttpOnly` cookie holding a JWT;
+  Bruno stores it and sends it back on the next requests, like a browser.
+
+  Copy the token from the `Set-Cookie` header and paste it into https://jwt.io to read it:
+  a JWT is signed, not encrypted.

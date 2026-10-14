@@ -1,0 +1,35 @@
+info:
+  name: "Invalid list"
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/lists"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "visibility": "secret",
+        "ownerId": "someone-else"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "422"
+    - expression: res.body.errors
+      operator: length
+      value: "3"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `422 Unprocessable Content`: valid JSON, invalid content. Each entry of `errors` points at a field
+  with a JSON Pointer. `ownerId` is rejected: clients can't choose who owns a list.

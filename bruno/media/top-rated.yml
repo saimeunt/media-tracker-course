@@ -1,0 +1,36 @@
+info:
+  name: "Top rated"
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/media?sort=-rating&minRatings=10&genre=science fiction&limit=5"
+  params:
+    - name: sort
+      value: "-rating"
+      type: query
+    - name: minRatings
+      value: "10"
+      type: query
+    - name: genre
+      value: "science fiction"
+      type: query
+    - name: limit
+      value: "5"
+      type: query
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.items[0].stats.averageRating
+      operator: isNumber
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Sorted by average rating, only media rated by at least `minRatings` users. Each media's
+  `stats` are computed from users' entries and stored on the media, so this is a simple sorted query.

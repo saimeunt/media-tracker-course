@@ -1,0 +1,30 @@
+info:
+  name: "Invalid entry"
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/users/66f4a1000000000000000001/entries/Q83495"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "status": "watched",
+        "rating": 11
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "422"
+    - expression: res.body.errors
+      operator: length
+      value: "2"
+
+settings:
+  encodeUrl: true

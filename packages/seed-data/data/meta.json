@@ -1,0 +1,11 @@
+{
+  "source": "Wikidata (https://www.wikidata.org)",
+  "license": "CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/)",
+  "fetchedAt": "2026-10-13T11:37:09.325Z",
+  "counts": {
+    "movie": 300,
+    "book": 300,
+    "game": 200,
+    "series": 150
+  }
+}

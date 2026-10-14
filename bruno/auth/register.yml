@@ -1,0 +1,34 @@
+info:
+  name: "Register"
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/auth/register"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "username": "carol",
+        "email": "carol@example.com",
+        "password": "password123"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: in
+      value: "201, 409"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Creates an account and signs it in: look for the `Set-Cookie` response header.
+
+  Sending it a second time answers `409 Conflict`, since the username is taken.
+  The API keeps data in memory, so restarting it forgets carol.

@@ -1,0 +1,34 @@
+info:
+  name: "Invalid parameters"
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/media?type=podcast&limit=500"
+  params:
+    - name: type
+      value: "podcast"
+      type: query
+    - name: limit
+      value: "500"
+      type: query
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "400"
+    - expression: res.headers['content-type']
+      operator: contains
+      value: "application/problem+json"
+    - expression: res.body.errors
+      operator: length
+      value: "2"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Invalid query parameters: `400 Bad Request` with an RFC 9457 problem details body,
+  listing each invalid parameter in `errors`.

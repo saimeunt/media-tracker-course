@@ -1,0 +1,29 @@
+info:
+  name: "Alice's library"
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/users/66f4a1000000000000000001/entries?status=completed&limit=5"
+  params:
+    - name: status
+      value: "completed"
+      type: query
+    - name: limit
+      value: "5"
+      type: query
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.total
+      operator: isNumber
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  What alice completed, most recently updated first. Libraries are public.

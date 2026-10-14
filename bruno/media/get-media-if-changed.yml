@@ -1,0 +1,25 @@
+info:
+  name: "Get it again if changed"
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/media/Q25188"
+  headers:
+    - name: If-None-Match
+      value: "{{etag}}"
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "304"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  A conditional request: `If-None-Match` sends the ETag of the copy we already have.
+  It hasn't changed, so the server answers `304 Not Modified` with no body.
+  Change one character of the header value to get a `200` again.

@@ -1,0 +1,33 @@
+info:
+  name: "Add an item"
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/lists/{{listId}}/items"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "mediaId": "Q25188",
+        "note": "Again!"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "201"
+    - expression: res.body.title
+      operator: eq
+      value: "Inception"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  The item copies the media's title, type and year, so a list displays without fetching each media.

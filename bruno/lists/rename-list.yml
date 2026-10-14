@@ -1,0 +1,35 @@
+info:
+  name: "Rename the list"
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/lists/{{listId}}"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Rainy weekend"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.name
+      operator: eq
+      value: "Rainy weekend"
+    - expression: res.body.description
+      operator: eq
+      value: "Films for a rainy weekend"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `PATCH` changes only the fields it sends: the description is kept.

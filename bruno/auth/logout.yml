@@ -1,0 +1,20 @@
+info:
+  name: "Sign out"
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/auth/logout"
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "204"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Clears the cookie: `Set-Cookie` with an expiry date in the past.

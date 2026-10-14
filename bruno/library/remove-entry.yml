@@ -1,0 +1,17 @@
+info:
+  name: "Remove the entry"
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/users/66f4a1000000000000000001/entries/Q83495"
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "204"
+
+settings:
+  encodeUrl: true

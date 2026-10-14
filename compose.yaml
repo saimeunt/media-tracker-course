@@ -1,0 +1,68 @@
+# Local development stack: `docker compose up --build`, then open http://localhost:5173
+# Host ports can be changed with WEB_PORT, API_PORT and MONGO_PORT if they are already taken.
+name: media-tracker
+
+services:
+  mongo:
+    image: mongo:8.0
+    # Single-node replica set: needed for transactions and change streams.
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      # Initiates the replica set on first start; healthy once this node is primary.
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --eval
+        - "try { rs.status() } catch { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }) } quit(db.hello().isWritablePrimary ? 0 : 1)"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+
+  api:
+    build: .
+    image: media-tracker-dev
+    command: pnpm --filter @media-tracker/api dev
+    environment:
+      # "memory" (module 1) or "mongodb" (from module 2). An empty database is seeded on start.
+      DATA_STORE: ${DATA_STORE:-memory}
+      MONGODB_URI: mongodb://mongo:27017/media-tracker?replicaSet=rs0
+      # "1" prints every MongoDB query (e.g. to count those behind a GraphQL request).
+      LOG_QUERIES: ${LOG_QUERIES:-0}
+      PORT: "4000"
+    ports:
+      - "${API_PORT:-4000}:4000"
+    volumes:
+      - ./apps/api/src:/repo/apps/api/src
+      - ./apps/api/nodemon.json:/repo/apps/api/nodemon.json
+      # Tests and exercise files, so `docker compose exec api pnpm exercise R2` sees your changes.
+      - ./apps/api/test:/repo/apps/api/test
+      - ./apps/api/exercises:/repo/apps/api/exercises
+      - ./packages/shared/src:/repo/packages/shared/src
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  web:
+    build: .
+    image: media-tracker-dev
+    command: pnpm --filter @media-tracker/web dev
+    environment:
+      # Server-side: the dev server proxies /api and /graphql to the api service.
+      API_URL: http://api:4000
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      - ./apps/web/app:/repo/apps/web/app
+      - ./packages/shared/src:/repo/packages/shared/src
+    depends_on:
+      - api
+
+volumes:
+  mongo-data:

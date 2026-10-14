@@ -1,0 +1,35 @@
+info:
+  name: "Log an entry"
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/users/66f4a1000000000000000001/entries/Q83495"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "status": "completed",
+        "rating": 9,
+        "review": "Still holds up."
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: in
+      value: "200, 201"
+    - expression: res.body.rating
+      operator: eq
+      value: "9"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `PUT` creates the entry (`201 Created`) or replaces it (`200 OK`): send it twice, same result.
+  It also updates The Matrix's `stats`: check them with "Get the media's stats".

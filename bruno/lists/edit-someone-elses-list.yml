@@ -1,0 +1,29 @@
+info:
+  name: "Edit someone else's list"
+  type: http
+  seq: 12
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/api/lists/66f4a2000000000000000003"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Mine now"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "403"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  This list belongs to bob: `403 Forbidden`. We know who you are, but you may not do this.

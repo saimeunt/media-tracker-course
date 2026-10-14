@@ -1,0 +1,29 @@
+info:
+  name: "Create a list (signed out)"
+  type: http
+  seq: 15
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/lists"
+  headers:
+    - name: Content-Type
+      value: "application/json"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Anonymous list"
+      }
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "401"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  `401 Unauthorized`: nobody is signed in. Compare with the `403` of "Edit someone else's list".

@@ -1,0 +1,17 @@
+info:
+  name: "Remove an item"
+  type: http
+  seq: 9
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/lists/{{listId}}/items/Q83495"
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "204"
+
+settings:
+  encodeUrl: true

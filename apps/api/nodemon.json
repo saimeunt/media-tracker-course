@@ -1,0 +1,9 @@
+{
+  "watch": [
+    "src",
+    "../../packages/shared/src"
+  ],
+  "ext": "ts,json,graphql",
+  "exec": "node src/server.ts",
+  "signal": "SIGTERM"
+}

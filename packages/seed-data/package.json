@@ -1,0 +1,24 @@
+{
+  "name": "@media-tracker/seed-data",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Media seed data: a committed Wikidata snapshot (CC0) of movies, books, video games and TV series",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts",
+    "./synthetic": "./src/synthetic.ts",
+    "./media.json": "./data/media.json"
+  },
+  "scripts": {
+    "fetch-wikidata": "node scripts/fetch-wikidata.ts",
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "@faker-js/faker": "10.6.0"
+  }
+}
